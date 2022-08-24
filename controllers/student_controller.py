@@ -1,39 +1,25 @@
 from models.student_model import StudentModel
-
+from db.student_repository import StudentRepository
 class StudentController():
   
   def __init__(self) -> None:
-    self.students = {
-      "1": StudentModel({
-        "id": "1",
-        "name": "Andres",
-        "lastname": "Gutierrez"
-      }),
-      "2": StudentModel({
-        "id": "2",
-        "name": "Jairo",
-        "lastname": "Ochoa"
-      }),
-    }
+    self.repo = StudentRepository()
   
   def get(self):
-    values = []
-    for v in self.students.values():
-      values.append(v.__dict__)
-    return values
+    return self.repo.get_all()
   
-  def getById(self,id):
-    return self.students.get(id, StudentModel({}))
+  def get_by_id(self,id):
+    return self.repo.get_by_id(id)
   
-  def create(self,data):
-    self.students[data['id']] = StudentModel(data)
-    return self.students[data['id']]
+  # def create(self,data):
+  #   self.students[data['id']] = StudentModel(data)
+  #   return self.students[data['id']]
   
-  def update(self,id, data):
-    student = self.students[id]
-    for key, value in data.items():
-      setattr(student, key, value)
-      # student[key] = value
+  # def update(self,id, data):
+  #   student = self.students[id]
+  #   for key, value in data.items():
+  #     setattr(student, key, value)
+  #     # student[key] = value
   
-  def delete(self,id):
-    del self.students[id]
+  # def delete(self,id):
+  #   del self.students[id]

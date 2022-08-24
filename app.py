@@ -7,9 +7,7 @@ from routes.students_route import student_module
 config = dotenv_values('.env')
 app = Flask(__name__)
 cors = CORS(app)
-
 app.register_blueprint(student_module, url_prefix="/estudiantes")
-
 @app.route('/')
 def hello_world():
   dictToReturn = {'message': 'Hola mundo!'}

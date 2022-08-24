@@ -16,7 +16,7 @@ def createStudent():
   
 @student_module.get('/<string:id>')
 def showStudent(id):
-  return jsonify(controller.getById(id).__dict__)
+  return jsonify(controller.get_by_id(id))
 
 @student_module.put('/<string:id>')
 def updateStudent(id):
