@@ -6,25 +6,24 @@ student_module = Blueprint('students',__name__)
 controller = StudentController()
 
 @student_module.get('/')
-def getStudents():
-  return jsonify(controller.get())  
+def get_students():
+  return jsonify(controller.get(request.args))  
 
 @student_module.post('/')
-def createStudent():
-  result = controller.create(request.get_json())
-  return jsonify(result.__dict__), 201
+def create_student():
+  return jsonify(controller.create(request.get_json())), 201
   
 @student_module.get('/<string:id>')
-def showStudent(id):
+def show_student(id):
   return jsonify(controller.get_by_id(id))
 
 @student_module.put('/<string:id>')
-def updateStudent(id):
+def update_student(id):
   controller.update(id, request.get_json())
   return jsonify({}), 204
   
 @student_module.delete('/<string:id>')
-def deleteStudent(id):
+def delete_student(id):
   controller.delete(id)
   return jsonify({}), 204
 
