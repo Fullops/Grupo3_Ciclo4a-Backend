@@ -104,7 +104,7 @@ class Repository(Generic[T]):
     keys = x.keys()
     for k in keys:
       if isinstance(x[k], DBRef):
-        collection = self.db[x[k].collection]
+        collection = self.db.collection(x[k].collection)
         valor = collection.find_one({"_id": ObjectId(x[k].id)})
         valor["_id"] = valor["_id"].__str__()
         x[k] = valor
@@ -123,15 +123,17 @@ class Repository(Generic[T]):
       newList.append(value)
     return newList
    
-  def transform_refs(self, item):
+  def transform_refs(self, item: T):
     theDict = item.__dict__
     keys = list(theDict.keys())
     for k in keys:
-      if theDict[k].__str__().count("object") == 1:
-        newObject = self.object_to_db_ref(getattr(item, k))
-        setattr(item, k, newObject)
+        print(theDict[k].__str__().count("object"))
+        if theDict[k].__str__().count("object") == 1:
+          print(getattr(item, k))
+          newObject = self.object_to_db_ref(getattr(item, k))
+          setattr(item, k, newObject)
     return item
-  
+
   def object_to_db_ref(self, item: T):
-    nameCollection = item.__class__.__name__.lower()
+    nameCollection = item.__class__.__name__.lower().replace('model','')
     return DBRef(nameCollection, ObjectId(item._id))
