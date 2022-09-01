@@ -1,12 +1,15 @@
+from models.mesa_model import MesaModel
 from models.resultado_model import ResultadoModel
 from db.resultado_repository import ResultadoRepository
 from db.mesa_repository import MesaRepository
+from db.partido_repository import PartidoRepository
 
 class ResultadoController():
     
     def __init__(self):
         self.repo = ResultadoRepository()
         self.repo_mesa = MesaRepository()
+        #self.repo_partido = PartidoRepository()
     
     def get(self): 
             return self.repo.get_all()
@@ -14,13 +17,15 @@ class ResultadoController():
     def getById(self,id):
         return self.repo.get_by_id(id)
     
-    def create(self,data,numero_mesa):
+    def create(self,data,mesa_id):
         resultado = ResultadoModel(data) #creamos Mesa
-        mesa = self.repo_mesa.get_by_id(numero_mesa)
-        resultado.mesa = mesa
+        mesa = self.repo_mesa.get_by_id(mesa_id)
+        #partido = self.repo_partido.get_by_id(partido_id)
+        resultado.mesa = MesaModel(mesa)
+        #resultado.partido = resultado.mesa + partido
 
         return{
-            self.repo.save(resultado) #llamamos al repo en el metodo Save
+            "id":self.repo.save(resultado) #llamamos al repo en el metodo Save
         }
 
     def update(self, id,  data):
