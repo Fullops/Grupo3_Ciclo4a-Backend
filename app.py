@@ -1,25 +1,26 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from dotenv import dotenv_values
+from routes.mesa_route import mesa_Module
+from routes.partido_route import partido_Module
+from routes.candidato_route import candidato_Module
+from routes.resultado_route import resultado_Module
 
-from routes.students_route import student_module
-from routes.subject_routes import subject_module
-from routes.department_routes import department_module
-
-
-config = dotenv_values('.env')
+config = dotenv_values('.env') #instanciamos las variables de entonro
 app = Flask(__name__)
 cors = CORS(app)
 
-app.register_blueprint(student_module, url_prefix="/estudiantes")
-app.register_blueprint(subject_module, url_prefix="/materias")
-app.register_blueprint(department_module, url_prefix="/facultades")
-
+# registramos Blue print
+app.register_blueprint(mesa_Module, url_prefix="/mesa")  # Url_prefix = path
+app.register_blueprint(partido_Module,url_prefix="/partido")
+app.register_blueprint(candidato_Module,url_prefix="/candidato")
+app.register_blueprint(resultado_Module,url_prefix="/resultado")
 
 @app.route('/')
-def hello_world():
-  dictToReturn = {'message': 'Hola mundo!'}
-  return jsonify(dictToReturn)
+def hello_word():
+    dictToReturn = {'message': 'Hola mundirilijillo'}
+    return jsonify(dictToReturn)
+
 
 if __name__ == '__main__':
-  app.run(host='localhost', port=config["PORT"], debug=True)
+    app.run(host='localhost', port=config["PORT"], debug=True)
